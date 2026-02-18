@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ruxolitinib — Scientific Publication Timeline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,400;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <span class="drug-name">Ruxolitinib</span>
+        <span class="header-subtitle">Scientific Evidence Timeline</span>
+      </div>
+      <div class="header-meta">
+        <span class="pub-count-label">Showing <strong id="visibleCount">0</strong> of <strong id="totalCount">0</strong> publications</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter Panel -->
+  <aside class="filter-panel" id="filterPanel">
+    <div class="filter-panel-inner">
+
+      <div class="filter-section">
+        <h3 class="filter-title">Indication</h3>
+        <div class="filter-chips" id="indicationFilters">
+          <label class="chip active"><input type="checkbox" value="all" checked /> All</label>
+          <label class="chip"><input type="checkbox" value="MF" /> Myelofibrosis</label>
+          <label class="chip"><input type="checkbox" value="PV" /> Polycythemia Vera</label>
+          <label class="chip"><input type="checkbox" value="GVHD" /> GvHD</label>
+          <label class="chip"><input type="checkbox" value="AA" /> Alopecia Areata</label>
+          <label class="chip"><input type="checkbox" value="COVID" /> COVID-19</label>
+          <label class="chip"><input type="checkbox" value="Other" /> Other</label>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h3 class="filter-title">Material Type</h3>
+        <div class="filter-chips" id="typeFilters">
+          <label class="chip active"><input type="checkbox" value="all" checked /> All</label>
+          <label class="chip"><input type="checkbox" value="Clinical Trial" /> Clinical Trial</label>
+          <label class="chip"><input type="checkbox" value="Review" /> Review</label>
+          <label class="chip"><input type="checkbox" value="Congress" /> Congress / Abstract</label>
+          <label class="chip"><input type="checkbox" value="Case Report" /> Case Report</label>
+          <label class="chip"><input type="checkbox" value="Guideline" /> Guideline</label>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h3 class="filter-title">Year Range</h3>
+        <div class="year-range-wrap">
+          <div class="year-labels">
+            <span id="yearMin">2015</span>
+            <span id="yearMax">2025</span>
+          </div>
+          <div class="dual-range-wrap">
+            <input type="range" id="rangeMin" min="2015" max="2025" value="2015" class="range-input range-min" />
+            <input type="range" id="rangeMax" min="2015" max="2025" value="2025" class="range-input range-max" />
+            <div class="range-track">
+              <div class="range-fill" id="rangeFill"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="reset-btn" id="resetFilters">Reset Filters</button>
+
+    </div>
+  </aside>
+
+  <!-- Main timeline -->
+  <main class="timeline-main" id="timelineMain">
+    <div class="timeline-spine"></div>
+    <div class="timeline-list" id="timelineList">
+      <!-- cards injected by JS -->
+    </div>
+    <div class="no-results" id="noResults" style="display:none;">
+      <p>No publications match your current filters.</p>
+      <button class="reset-btn" onclick="resetAll()">Reset Filters</button>
+    </div>
+  </main>
+
+  <!-- Preview Card Modal -->
+  <div class="preview-backdrop" id="previewBackdrop"></div>
+  <aside class="preview-panel" id="previewPanel">
+    <button class="preview-close" id="previewClose" aria-label="Close">&#x2715;</button>
+    <div class="preview-body" id="previewBody">
+      <!-- injected by JS -->
+    </div>
+  </aside>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
