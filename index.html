@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tim Riddell – Medical Presentation</title>
+  <style>
+    /* ── Reset & Base ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0d2d5e;
+      --blue:   #1a56a0;
+      --teal:   #0ea5a0;
+      --light:  #f0f6ff;
+      --white:  #ffffff;
+      --grey:   #64748b;
+      --text:   #1e293b;
+      --accent: #e84545;
+      --card-shadow: 0 4px 24px rgba(13,45,94,.12);
+      --radius: 12px;
+      --transition: .3s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    img { max-width: 100%; display: block; }
+    a   { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Utility ────────────────────────────────────────────────────────── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+    .section    { padding: 5rem 0; }
+    .section-alt{ background: var(--light); }
+
+    .tag {
+      display: inline-block;
+      background: rgba(10,165,160,.12);
+      color: var(--teal);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: .25rem .75rem;
+      border-radius: 999px;
+      margin-bottom: .75rem;
+    }
+
+    h2.section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--navy);
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      color: var(--grey);
+      font-size: 1.05rem;
+      max-width: 640px;
+      margin-bottom: 3rem;
+    }
+
+    /* ── Navigation ─────────────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid rgba(13,45,94,.08);
+      box-shadow: 0 2px 12px rgba(13,45,94,.06);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-logo {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -.02em;
+    }
+
+    .nav-logo span { color: var(--teal); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: .92rem;
+      font-weight: 600;
+      color: var(--grey);
+      transition: color var(--transition);
+    }
+
+    .nav-links a:hover { color: var(--navy); text-decoration: none; }
+
+    /* ── Hero ───────────────────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 60%, var(--teal) 100%);
+      color: var(--white);
+      padding: 6rem 0 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      font-size: .85rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.7);
+      margin-bottom: .75rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      letter-spacing: -.03em;
+    }
+
+    .hero h1 span { color: #7ee8e8; }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,.85);
+      margin-bottom: 2rem;
+      max-width: 480px;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .75rem 1.75rem;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: .95rem;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+      border: none;
+    }
+
+    .btn:hover { transform: translateY(-2px); text-decoration: none; }
+
+    .btn-primary {
+      background: var(--white);
+      color: var(--navy);
+      box-shadow: 0 4px 20px rgba(0,0,0,.2);
+    }
+
+    .btn-primary:hover { box-shadow: 0 8px 28px rgba(0,0,0,.25); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,.5);
+    }
+
+    .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,.08); }
+
+    .hero-card {
+      background: rgba(255,255,255,.1);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: var(--radius);
+      padding: 2rem;
+    }
+
+    .hero-card-title {
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.6);
+      margin-bottom: 1.25rem;
+    }
+
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .stat-item { text-align: center; }
+
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #7ee8e8;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: .78rem;
+      color: rgba(255,255,255,.7);
+      margin-top: .25rem;
+    }
+
+    /* ── About ──────────────────────────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-portrait {
+      position: relative;
+    }
+
+    .portrait-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,.7);
+      font-size: 5rem;
+    }
+
+    .portrait-placeholder p {
+      font-size: .9rem;
+      margin-top: .5rem;
+      letter-spacing: .05em;
+    }
+
+    .about-badge {
+      position: absolute;
+      bottom: -1rem;
+      right: -1rem;
+      background: var(--teal);
+      color: var(--white);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      font-weight: 800;
+      font-size: .9rem;
+      box-shadow: var(--card-shadow);
+      text-align: center;
+    }
+
+    .about-badge span { display: block; font-size: 1.8rem; font-weight: 900; }
+
+    .credentials-list {
+      list-style: none;
+      margin: 1.5rem 0;
+    }
+
+    .credentials-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+      padding: .6rem 0;
+      border-bottom: 1px solid rgba(13,45,94,.06);
+      font-size: .95rem;
+    }
+
+    .credentials-list li:last-child { border-bottom: none; }
+
+    .cred-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: white;
+      font-size: .8rem;
+      font-weight: 700;
+    }
+
+    /* ── Research Highlights ─────────────────────────────────────────────── */
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .research-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      box-shadow: var(--card-shadow);
+      border-top: 4px solid var(--teal);
+      transition: transform var(--transition);
+    }
+
+    .research-card:hover { transform: translateY(-4px); }
+
+    .research-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .research-card h3 {
+      font-size: 1rem;
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: .5rem;
+    }
+
+    .research-card p {
+      font-size: .9rem;
+      color: var(--grey);
+      line-height: 1.6;
+    }
+
+    /* ── Presentation Timeline ──────────────────────────────────────────── */
+    .timeline {
+      position: relative;
+      padding-left: 2.5rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: .75rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--blue), var(--teal));
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -2.5rem;
+      top: .25rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: var(--blue);
+      border: 3px solid var(--white);
+      box-shadow: 0 0 0 3px var(--blue);
+    }
+
+    .timeline-item.active .timeline-dot { background: var(--teal); box-shadow: 0 0 0 3px var(--teal); }
+
+    .timeline-meta {
+      font-size: .8rem;
+      color: var(--teal);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: .25rem;
+    }
+
+    .timeline-item h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: .35rem;
+    }
+
+    .timeline-item p { font-size: .9rem; color: var(--grey); }
+
+    /* ── Publications ──────────────────────────────────────────────────── */
+    .pub-list { list-style: none; }
+
+    .pub-item {
+      display: flex;
+      gap: 1.25rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(13,45,94,.08);
+    }
+
+    .pub-item:last-child { border-bottom: none; }
+
+    .pub-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: var(--white);
+      font-weight: 800;
+      font-size: .85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: .1rem;
+    }
+
+    .pub-title {
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: .3rem;
+      font-size: .98rem;
+    }
+
+    .pub-journal {
+      font-size: .88rem;
+      color: var(--grey);
+      font-style: italic;
+    }
+
+    .pub-year {
+      font-size: .8rem;
+      color: var(--teal);
+      font-weight: 700;
+      margin-top: .2rem;
+    }
+
+    /* ── Contact ────────────────────────────────────────────────────────── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .contact-info h2 { margin-bottom: 1rem; }
+
+    .contact-methods { list-style: none; margin-top: 2rem; }
+
+    .contact-methods li {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: .9rem 0;
+      border-bottom: 1px solid rgba(13,45,94,.08);
+      font-size: .95rem;
+    }
+
+    .contact-methods li:last-child { border-bottom: none; }
+
+    .contact-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .contact-form {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-group { margin-bottom: 1.25rem; }
+
+    .form-group label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: .4rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: .7rem 1rem;
+      border: 1.5px solid rgba(13,45,94,.15);
+      border-radius: 8px;
+      font-size: .95rem;
+      font-family: inherit;
+      color: var(--text);
+      transition: border-color var(--transition);
+      background: var(--light);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--teal);
+      background: var(--white);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 110px; }
+
+    /* ── Footer ─────────────────────────────────────────────────────────── */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,.7);
+      text-align: center;
+      padding: 2rem;
+      font-size: .88rem;
+    }
+
+    footer strong { color: var(--white); }
+
+    /* ── Responsive ─────────────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero-grid,
+      .about-grid,
+      .contact-grid { grid-template-columns: 1fr; }
+      .hero-card { display: none; }
+      .research-grid { grid-template-columns: 1fr 1fr; }
+      .about-badge { right: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .research-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ──────────────────────────────────────────────────────── -->
+<nav>
+  <div class="container nav-inner">
+    <div class="nav-logo">Tim Riddell <span>MD</span></div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#presentation">Presentation</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── Hero ────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Medical Presentation · 2026</p>
+      <h1>Advancing <span>Patient Care</span> Through Innovation</h1>
+      <p class="hero-sub">
+        A comprehensive overview of current research, clinical findings,
+        and evidence-based strategies in modern medicine by Dr. Tim Riddell.
+      </p>
+      <div class="hero-actions">
+        <a href="#presentation" class="btn btn-primary">View Presentation</a>
+        <a href="#publications" class="btn btn-outline">Publications</a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <p class="hero-card-title">Career at a Glance</p>
+      <div class="stat-grid">
+        <div class="stat-item">
+          <div class="stat-num">20+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Publications</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">12</div>
+          <div class="stat-label">Clinical Trials</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">8K+</div>
+          <div class="stat-label">Patients Treated</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── About ───────────────────────────────────────────────────────────── -->
+<section id="about" class="section">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-portrait">
+        <div class="portrait-placeholder">
+          👨‍⚕️
+          <p>Dr. Tim Riddell</p>
+        </div>
+        <div class="about-badge">
+          <span>MD</span>
+          FRCP
+        </div>
+      </div>
+
+      <div class="about-text">
+        <span class="tag">About</span>
+        <h2 class="section-title">Dr. Tim Riddell</h2>
+        <p style="color:var(--grey); margin-bottom:1rem;">
+          Dr. Tim Riddell is a distinguished physician-scientist with over two decades
+          of clinical and research experience. His work bridges cutting-edge biomedical
+          research and compassionate patient care, with a particular focus on advancing
+          diagnostic and therapeutic approaches in internal medicine.
+        </p>
+        <p style="color:var(--grey);">
+          A frequent speaker at international medical conferences, Dr. Riddell is
+          passionate about translating complex scientific findings into practical
+          clinical insights that improve patient outcomes worldwide.
+        </p>
+
+        <ul class="credentials-list">
+          <li>
+            <div class="cred-icon">🎓</div>
+            <div>
+              <strong>MD, Medicine</strong><br>
+              <span style="color:var(--grey);font-size:.9rem;">University School of Medicine, 2004</span>
+            </div>
+          </li>
+          <li>
+            <div class="cred-icon">🏥</div>
+            <div>
+              <strong>Residency – Internal Medicine</strong><br>
+              <span style="color:var(--grey);font-size:.9rem;">National Medical Centre, 2007</span>
+            </div>
+          </li>
+          <li>
+            <div class="cred-icon">🔬</div>
+            <div>
+              <strong>Fellowship – Clinical Research</strong><br>
+              <span style="color:var(--grey);font-size:.9rem;">Institute for Biomedical Research, 2010</span>
+            </div>
+          </li>
+          <li>
+            <div class="cred-icon">⭐</div>
+            <div>
+              <strong>Fellow of the Royal College of Physicians (FRCP)</strong><br>
+              <span style="color:var(--grey);font-size:.9rem;">Awarded 2015</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Research ─────────────────────────────────────────────────────────── -->
+<section id="research" class="section section-alt">
+  <div class="container">
+    <span class="tag">Research Focus</span>
+    <h2 class="section-title">Areas of Expertise</h2>
+    <p class="section-subtitle">
+      Dr. Riddell's research spans several critical domains of modern medicine,
+      each aimed at improving patient outcomes and advancing clinical knowledge.
+    </p>
+
+    <div class="research-grid">
+      <div class="research-card">
+        <div class="research-icon">🫀</div>
+        <h3>Cardiovascular Medicine</h3>
+        <p>Investigating novel biomarkers and therapeutic targets in heart failure,
+           with a focus on early intervention strategies and personalised treatment protocols.</p>
+      </div>
+      <div class="research-card">
+        <div class="research-icon">🧬</div>
+        <h3>Precision Oncology</h3>
+        <p>Applying genomic profiling and immunotherapy advances to tailor cancer
+           treatment plans, improving response rates while minimising adverse effects.</p>
+      </div>
+      <div class="research-card">
+        <div class="research-icon">🧠</div>
+        <h3>Neurological Disorders</h3>
+        <p>Exploring the intersection of inflammation and neurodegeneration, seeking
+           disease-modifying therapies for Alzheimer's and Parkinson's disease.</p>
+      </div>
+      <div class="research-card">
+        <div class="research-icon">💉</div>
+        <h3>Clinical Trials Design</h3>
+        <p>Developing robust methodologies for multi-centre randomised controlled
+           trials, ensuring statistical rigour and ethical integrity.</p>
+      </div>
+      <div class="research-card">
+        <div class="research-icon">📊</div>
+        <h3>Health Data Analytics</h3>
+        <p>Leveraging large-scale electronic health records and machine learning
+           models to uncover population-level health trends and risk predictors.</p>
+      </div>
+      <div class="research-card">
+        <div class="research-icon">🌐</div>
+        <h3>Global Health Equity</h3>
+        <p>Advocating for equitable access to diagnostics and treatment in
+           low-resource settings, in partnership with international health bodies.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Presentation Timeline ────────────────────────────────────────────── -->
+<section id="presentation" class="section">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;">
+      <div>
+        <span class="tag">Presentation</span>
+        <h2 class="section-title">Today's Programme</h2>
+        <p class="section-subtitle" style="margin-bottom:2rem;">
+          A structured journey through the latest evidence, clinical case studies,
+          and forward-looking perspectives in patient-centred medicine.
+        </p>
+
+        <div class="timeline">
+          <div class="timeline-item active">
+            <div class="timeline-dot"></div>
+            <p class="timeline-meta">09:00 – Introduction</p>
+            <h3>Welcome & Overview</h3>
+            <p>Setting the scene: where medicine stands today and why innovation matters more than ever.</p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <p class="timeline-meta">09:30 – Session 1</p>
+            <h3>Cardiovascular Risk Stratification</h3>
+            <p>New biomarker panels and AI-assisted scoring tools for early identification of high-risk patients.</p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <p class="timeline-meta">10:15 – Session 2</p>
+            <h3>Precision Oncology in Practice</h3>
+            <p>Case studies illustrating how genomic data reshapes treatment decisions in real-world oncology.</p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <p class="timeline-meta">11:00 – Coffee Break</p>
+            <h3>Networking &amp; Discussion</h3>
+            <p>Informal discussion with colleagues and poster viewing in the exhibition hall.</p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <p class="timeline-meta">11:30 – Session 3</p>
+            <h3>Digital Health &amp; AI Diagnostics</h3>
+            <p>Evaluating the evidence base for AI-assisted imaging, decision support, and remote monitoring.</p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <p class="timeline-meta">12:30 – Closing</p>
+            <h3>Q&A &amp; Conclusions</h3>
+            <p>Open forum for questions, key takeaways, and next steps for clinical implementation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <span class="tag">Key Findings</span>
+        <h2 class="section-title" style="font-size:1.5rem;">Evidence Highlights</h2>
+
+        <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:1.25rem;">
+          <div style="background:var(--light);border-radius:var(--radius);padding:1.5rem;border-left:4px solid var(--teal);">
+            <strong style="color:var(--navy);font-size:1rem;">38% Reduction in CV Events</strong>
+            <p style="color:var(--grey);font-size:.9rem;margin-top:.5rem;">
+              RIDDELL-HEART Trial (2024): Novel troponin-guided therapy protocol
+              reduced major adverse cardiac events in high-risk populations vs. standard care.
+            </p>
+          </div>
+          <div style="background:var(--light);border-radius:var(--radius);padding:1.5rem;border-left:4px solid var(--blue);">
+            <strong style="color:var(--navy);font-size:1rem;">2× Faster Diagnosis</strong>
+            <p style="color:var(--grey);font-size:.9rem;margin-top:.5rem;">
+              AI-assisted imaging platform halved diagnostic time for pulmonary embolism
+              in emergency settings across 6 NHS Trusts (2025 multicentre study).
+            </p>
+          </div>
+          <div style="background:var(--light);border-radius:var(--radius);padding:1.5rem;border-left:4px solid var(--accent);">
+            <strong style="color:var(--navy);font-size:1rem;">62% Response Rate</strong>
+            <p style="color:var(--grey);font-size:.9rem;margin-top:.5rem;">
+              Personalised immunotherapy protocol, guided by tumour microenvironment
+              profiling, achieved superior response in NSCLC patients versus pembrolizumab monotherapy.
+            </p>
+          </div>
+          <div style="background:var(--light);border-radius:var(--radius);padding:1.5rem;border-left:4px solid var(--navy);">
+            <strong style="color:var(--navy);font-size:1rem;">£4.2M Cost Savings</strong>
+            <p style="color:var(--grey);font-size:.9rem;margin-top:.5rem;">
+              Predictive analytics model deployed across 3 hospital trusts identified
+              avoidable readmissions, delivering significant cost efficiency over 18 months.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Publications ─────────────────────────────────────────────────────── -->
+<section id="publications" class="section section-alt">
+  <div class="container">
+    <span class="tag">Publications</span>
+    <h2 class="section-title">Selected Publications</h2>
+    <p class="section-subtitle">
+      A curated selection of peer-reviewed articles and landmark studies
+      from Dr. Riddell's academic portfolio.
+    </p>
+
+    <ul class="pub-list">
+      <li class="pub-item">
+        <div class="pub-number">1</div>
+        <div>
+          <div class="pub-title">Troponin-Guided Therapy in High-Risk Cardiac Patients: A Randomised Controlled Trial</div>
+          <div class="pub-journal">New England Journal of Medicine · Riddell T, et al.</div>
+          <div class="pub-year">2024</div>
+        </div>
+      </li>
+      <li class="pub-item">
+        <div class="pub-number">2</div>
+        <div>
+          <div class="pub-title">Artificial Intelligence in Emergency Radiology: Multicentre Validation Study</div>
+          <div class="pub-journal">The Lancet Digital Health · Riddell T, Harrison S, et al.</div>
+          <div class="pub-year">2025</div>
+        </div>
+      </li>
+      <li class="pub-item">
+        <div class="pub-number">3</div>
+        <div>
+          <div class="pub-title">Tumour Microenvironment Profiling for Personalised Immunotherapy in NSCLC</div>
+          <div class="pub-journal">Journal of Clinical Oncology · Riddell T, Patel A, et al.</div>
+          <div class="pub-year">2024</div>
+        </div>
+      </li>
+      <li class="pub-item">
+        <div class="pub-number">4</div>
+        <div>
+          <div class="pub-title">Predictive Analytics for Hospital Readmission: Economic Modelling and Implementation</div>
+          <div class="pub-journal">BMJ Quality &amp; Safety · Riddell T, et al.</div>
+          <div class="pub-year">2025</div>
+        </div>
+      </li>
+      <li class="pub-item">
+        <div class="pub-number">5</div>
+        <div>
+          <div class="pub-title">Neuroinflammation as a Driver of Neurodegeneration: Emerging Therapeutic Targets</div>
+          <div class="pub-journal">Nature Medicine · Riddell T, Okafor B, et al.</div>
+          <div class="pub-year">2023</div>
+        </div>
+      </li>
+      <li class="pub-item">
+        <div class="pub-number">6</div>
+        <div>
+          <div class="pub-title">Genomic Predictors of Chemotherapy Resistance in Breast Cancer: A Systematic Review</div>
+          <div class="pub-journal">Annals of Oncology · Riddell T, Chen L, et al.</div>
+          <div class="pub-year">2022</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── Contact ──────────────────────────────────────────────────────────── -->
+<section id="contact" class="section">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <span class="tag">Contact</span>
+        <h2 class="section-title">Get in Touch</h2>
+        <p style="color:var(--grey);">
+          For speaking engagements, research collaborations, or clinical enquiries,
+          please reach out using the form or the contact details below.
+        </p>
+
+        <ul class="contact-methods">
+          <li>
+            <div class="contact-icon">🏥</div>
+            <div>
+              <strong>Academic Affiliation</strong><br>
+              <span style="color:var(--grey);font-size:.9rem;">Department of Medicine, University Medical Centre</span>
+            </div>
+          </li>
+          <li>
+            <div class="contact-icon">✉️</div>
+            <div>
+              <strong>Email</strong><br>
+              <span style="color:var(--grey);font-size:.9rem;">t.riddell@medicalcentre.ac</span>
+            </div>
+          </li>
+          <li>
+            <div class="contact-icon">📞</div>
+            <div>
+              <strong>Office</strong><br>
+              <span style="color:var(--grey);font-size:.9rem;">+44 (0)20 0000 0000</span>
+            </div>
+          </li>
+          <li>
+            <div class="contact-icon">🌐</div>
+            <div>
+              <strong>Research Profile</strong><br>
+              <span style="color:var(--grey);font-size:.9rem;">researchgate.net/profile/tim-riddell</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="contact-form">
+        <h3 style="color:var(--navy);margin-bottom:1.25rem;font-size:1.1rem;">Send a Message</h3>
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">First Name</label>
+              <input type="text" id="fname" placeholder="Jane" required />
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name</label>
+              <input type="text" id="lname" placeholder="Smith" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="jane@hospital.org" required />
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <select id="subject">
+              <option value="">Select a topic…</option>
+              <option>Speaking Engagement</option>
+              <option>Research Collaboration</option>
+              <option>Clinical Enquiry</option>
+              <option>Media Request</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="Your message here…" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;border-radius:8px;">
+            Send Message
+          </button>
+          <div id="form-success" style="display:none;margin-top:1rem;color:var(--teal);font-weight:600;text-align:center;">
+            ✔ Message sent successfully. Thank you!
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ───────────────────────────────────────────────────────────── -->
+<footer>
+  <p>&copy; 2026 <strong>Dr. Tim Riddell</strong>. All rights reserved.</p>
+  <p style="margin-top:.4rem;">Medical Presentation Site · Built for educational and professional purposes.</p>
+</footer>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('form-success').style.display = 'block';
+    e.target.reset();
+  }
+</script>
+
+</body>
+</html>
