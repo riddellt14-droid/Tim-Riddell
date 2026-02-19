@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tim Riddell PA-C, MMSc | MSL Presentation</title>
+  <style>
+    /* ─── Reset & Variables ─────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy:       #0d1f3c;
+      --navy-dark:  #080f1e;
+      --navy-mid:   #152849;
+      --gold:       #c9a84c;
+      --gold-light: #e2c06a;
+      --gold-pale:  #f4e4b8;
+      --white:      #ffffff;
+      --muted:      #8fa0be;
+      --light:      #cdd8eb;
+      --shadow:     0 24px 64px rgba(0,0,0,.45);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--navy-dark);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ─── Utility ───────────────────────────────────────── */
+    .sans { font-family: Arial, Helvetica, sans-serif; }
+    .gold { color: var(--gold); }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 2.5rem; width: 100%; }
+
+    .section-label {
+      font-family: Arial, sans-serif;
+      font-size: .72rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .9rem;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 3.8vw, 3.2rem);
+      line-height: 1.15;
+      margin-bottom: 1.4rem;
+    }
+
+    .divider {
+      width: 52px; height: 3px;
+      background: var(--gold);
+      margin-bottom: 2.2rem;
+    }
+
+    /* ─── Navigation ────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      height: 58px;
+      background: rgba(8,15,30,.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,.25);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+    }
+
+    .nav-brand {
+      font-family: Arial, sans-serif;
+      font-size: .85rem;
+      letter-spacing: .06em;
+      color: var(--gold);
+    }
+
+    .nav-links { display: flex; gap: 1.6rem; list-style: none; }
+
+    .nav-links a {
+      font-family: Arial, sans-serif;
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--light);
+      text-decoration: none;
+      transition: color .25s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--gold); }
+
+    #progress-bar {
+      position: fixed; top: 58px; left: 0; height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      z-index: 999; width: 0; transition: width .08s linear;
+    }
+
+    /* ─── Sections ──────────────────────────────────────── */
+    section {
+      min-height: 100vh;
+      padding: 100px 0 70px;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    /* ════════════════════════════════════════════════════
+       §1  HERO
+    ════════════════════════════════════════════════════ */
+    #hero {
+      padding: 0;
+      background: var(--navy-dark);
+    }
+
+    .hero-wrap {
+      position: relative;
+      width: 100%; min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('images/family-photo.jpg') center 30% / cover no-repeat;
+    }
+
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(8,15,30,.98)  0%,
+        rgba(8,15,30,.72) 38%,
+        rgba(8,15,30,.28) 70%,
+        rgba(8,15,30,.10) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 3rem 4rem 5.5rem;
+      max-width: 860px;
+    }
+
+    .hero-eyebrow {
+      font-family: Arial, sans-serif;
+      font-size: .8rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.4rem;
+    }
+
+    .hero-name {
+      font-size: clamp(3rem, 7vw, 5.8rem);
+      font-weight: normal; line-height: 1;
+      margin-bottom: .4rem;
+    }
+
+    .hero-cred {
+      font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+      color: var(--gold-light); font-style: italic;
+      margin-bottom: 2rem;
+    }
+
+    .hero-tags { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 2.8rem; }
+
+    .hero-tag {
+      background: rgba(201,168,76,.12);
+      border: 1px solid rgba(201,168,76,.38);
+      color: var(--gold-light);
+      padding: .35rem .95rem;
+      font-family: Arial, sans-serif; font-size: .76rem; letter-spacing: .04em;
+    }
+
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: .9rem;
+      font-family: Arial, sans-serif; font-size: .74rem;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: var(--muted); cursor: pointer; transition: color .3s;
+      background: none; border: none;
+    }
+
+    .hero-cta:hover { color: var(--gold); }
+    .cta-line { width: 38px; height: 1px; background: currentColor; }
+
+    /* ════════════════════════════════════════════════════
+       §2  ABOUT
+    ════════════════════════════════════════════════════ */
+    #about { background: var(--navy); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+    }
+
+    .photo-stack {
+      position: relative; height: 580px;
+    }
+
+    .photo-main {
+      position: absolute; top: 0; left: 0;
+      width: 74%; height: 68%;
+      object-fit: cover;
+      border: 3px solid var(--gold);
+      box-shadow: var(--shadow);
+      background: var(--navy-mid);  /* fallback */
+    }
+
+    .photo-secondary {
+      position: absolute; bottom: 0; right: 0;
+      width: 54%; height: 52%;
+      object-fit: cover;
+      border: 3px solid var(--navy-dark);
+      outline: 1px solid rgba(201,168,76,.3);
+      box-shadow: var(--shadow);
+      background: var(--navy-mid);
+    }
+
+    .about-bio {
+      font-size: 1.05rem; line-height: 1.85;
+      color: var(--light); margin-bottom: 2rem;
+    }
+
+    .about-cards {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .9rem;
+    }
+
+    .about-card {
+      background: rgba(13,31,60,.8);
+      border: 1px solid rgba(201,168,76,.18);
+      border-left: 3px solid var(--gold);
+      padding: 1rem 1.2rem;
+    }
+
+    .ac-icon { font-size: 1.35rem; margin-bottom: .4rem; }
+
+    .ac-title {
+      font-family: Arial, sans-serif; font-size: .68rem;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .2rem;
+    }
+
+    .ac-text { font-size: .88rem; color: var(--light); line-height: 1.5; }
+
+    /* ════════════════════════════════════════════════════
+       §3  PAPER OVERVIEW
+    ════════════════════════════════════════════════════ */
+    #overview { background: var(--navy-dark); }
+
+    .citation-box {
+      background: rgba(201,168,76,.07);
+      border: 1px solid rgba(201,168,76,.22);
+      border-left: 4px solid var(--gold);
+      padding: 1.5rem 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .citation-label {
+      font-family: Arial, sans-serif; font-size: .68rem;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .45rem;
+    }
+
+    .citation-text {
+      font-style: italic; color: var(--light);
+      font-size: .92rem; line-height: 1.75;
+    }
+
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+
+    .stat-card {
+      background: rgba(21,40,73,.6);
+      border: 1px solid rgba(201,168,76,.14);
+      padding: 1.8rem 1rem;
+      text-align: center;
+      transition: border-color .3s, transform .3s;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(201,168,76,.5);
+      transform: translateY(-4px);
+    }
+
+    .stat-num {
+      font-size: 2.6rem; font-weight: bold;
+      color: var(--gold); line-height: 1; margin-bottom: .45rem;
+    }
+
+    .stat-lbl {
+      font-family: Arial, sans-serif; font-size: .78rem;
+      letter-spacing: .06em; color: var(--light);
+    }
+
+    /* ════════════════════════════════════════════════════
+       §4  BACKGROUND
+    ════════════════════════════════════════════════════ */
+    #background { background: var(--navy); }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; }
+
+    .hemo-card {
+      position: relative; overflow: hidden;
+      background: rgba(8,15,30,.75);
+      border: 1px solid rgba(201,168,76,.18);
+      padding: 1.6rem 1.6rem 1.6rem 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .hemo-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--gold);
+    }
+
+    .hemo-card h3 { color: var(--gold-light); font-size: 1.1rem; margin-bottom: .65rem; }
+
+    .hemo-card p { color: var(--light); font-size: .9rem; line-height: 1.75; }
+
+    .hemo-stat { font-size: 1.4rem; font-weight: bold; color: var(--gold); }
+
+    .tx-list { list-style: none; }
+
+    .tx-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      color: var(--light); font-size: .92rem; line-height: 1.65;
+    }
+
+    .tx-item:last-child { border-bottom: none; }
+    .tx-dot { color: var(--gold); flex-shrink: 0; margin-top: 3px; font-size: 1rem; }
+
+    .unmet-row {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem;
+      margin-top: 2rem; grid-column: 1 / -1;
+    }
+
+    .unmet-card {
+      background: rgba(201,168,76,.05);
+      border: 1px solid rgba(201,168,76,.18);
+      padding: 1.4rem; text-align: center;
+    }
+
+    .unmet-card h4 { color: var(--gold); font-size: .92rem; margin-bottom: .45rem; }
+    .unmet-card p { color: var(--muted); font-size: .83rem; line-height: 1.6; }
+
+    /* ════════════════════════════════════════════════════
+       §5  MECHANISM OF ACTION
+    ════════════════════════════════════════════════════ */
+    #mechanism { background: var(--navy-dark); }
+
+    .moa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+
+    .drug-badge {
+      display: inline-flex; align-items: center; gap: .85rem;
+      background: rgba(201,168,76,.1);
+      border: 1px solid var(--gold);
+      padding: .8rem 1.6rem; margin-bottom: 2rem;
+    }
+
+    .db-name { font-size: 1.25rem; font-weight: bold; color: var(--gold); letter-spacing: .05em; }
+    .db-class { font-family: Arial, sans-serif; font-size: .72rem; color: var(--muted); letter-spacing: .08em; }
+
+    .moa-steps { list-style: none; }
+
+    .moa-step { display: flex; gap: 1.2rem; align-items: flex-start; margin-bottom: 1.65rem; }
+
+    .step-num {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--gold); color: var(--navy-dark);
+      display: flex; align-items: center; justify-content: center;
+      font-family: Arial, sans-serif; font-weight: bold; font-size: .88rem;
+      flex-shrink: 0;
+    }
+
+    .step-body h4 { color: var(--gold-light); font-size: .98rem; margin-bottom: .3rem; }
+    .step-body p { color: var(--light); font-size: .88rem; line-height: 1.72; }
+
+    .cascade-wrap {
+      background: rgba(21,40,73,.5);
+      border: 1px solid rgba(201,168,76,.18);
+      padding: 1.8rem; border-radius: 4px;
+    }
+
+    /* ════════════════════════════════════════════════════
+       §6  TRIAL DESIGN
+    ════════════════════════════════════════════════════ */
+    #trial { background: var(--navy); }
+
+    .schema-scroll { overflow-x: auto; margin: 2rem 0; }
+
+    .schema-flow {
+      display: flex; align-items: stretch;
+      gap: 0; min-width: 640px;
+    }
+
+    .schema-box {
+      flex: 1; padding: 1.6rem 1.2rem;
+      text-align: center;
+    }
+
+    .schema-box.screening {
+      background: rgba(201,168,76,.08);
+      border: 2px solid rgba(201,168,76,.35);
+    }
+
+    .schema-box.op {
+      background: rgba(21,40,73,.9);
+      border: 2px solid rgba(201,168,76,.45);
+    }
+
+    .schema-box.atp {
+      background: rgba(201,168,76,.14);
+      border: 2px solid var(--gold);
+    }
+
+    .schema-arrow {
+      display: flex; align-items: center;
+      color: var(--gold); font-size: 1.8rem;
+      padding: 0 .3rem; flex-shrink: 0;
+    }
+
+    .schema-tag {
+      font-family: Arial, sans-serif; font-size: .66rem;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .4rem;
+    }
+
+    .schema-dur { font-size: 1.4rem; font-weight: bold; color: var(--white); margin-bottom: .3rem; }
+    .schema-desc { font-family: Arial, sans-serif; font-size: .78rem; color: var(--muted); line-height: 1.5; }
+
+    .trial-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; margin-top: 1.5rem; }
+
+    .group-card {
+      background: rgba(8,15,30,.8);
+      border: 1px solid rgba(201,168,76,.18);
+      padding: 1.65rem;
+    }
+
+    .group-card h3 {
+      color: var(--gold); font-size: 1.05rem;
+      margin-bottom: 1rem; padding-bottom: .75rem;
+      border-bottom: 1px solid rgba(201,168,76,.18);
+    }
+
+    .detail-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: .5rem 0; border-bottom: 1px solid rgba(255,255,255,.04);
+    }
+
+    .detail-row:last-child { border-bottom: none; }
+    .dr-label { font-family: Arial, sans-serif; font-size: .76rem; color: var(--muted); }
+    .dr-val { font-size: .88rem; color: var(--white); text-align: right; max-width: 58%; }
+
+    .ep-list { list-style: none; margin-top: 1.8rem; }
+
+    .ep-item {
+      padding: .75rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      font-size: .9rem; color: var(--light); line-height: 1.55;
+    }
+
+    .ep-item:last-child { border-bottom: none; }
+
+    .ep-badge {
+      display: inline-block;
+      background: var(--gold); color: var(--navy-dark);
+      font-family: Arial, sans-serif; font-size: .62rem;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: .12rem .45rem; margin-right: .45rem; vertical-align: middle;
+    }
+
+    .ep-badge.sec {
+      background: transparent;
+      border: 1px solid rgba(201,168,76,.5);
+      color: var(--gold-light);
+    }
+
+    /* ════════════════════════════════════════════════════
+       §7  EFFICACY
+    ════════════════════════════════════════════════════ */
+    #efficacy { background: var(--navy-dark); }
+
+    .big-stat { font-size: clamp(5rem, 11vw, 9rem); font-weight: bold; color: var(--gold); line-height: 1; }
+    .big-stat-lbl { font-family: Arial, sans-serif; font-size: .95rem; color: var(--muted); letter-spacing: .08em; }
+
+    .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem; margin-top: 2.5rem; }
+
+    .result-card {
+      background: rgba(21,40,73,.65);
+      border: 1px solid rgba(201,168,76,.18);
+      padding: 2rem;
+    }
+
+    .result-card h3 {
+      color: var(--gold); font-size: 1.05rem;
+      margin-bottom: 1rem; padding-bottom: .9rem;
+      border-bottom: 1px solid rgba(201,168,76,.18);
+    }
+
+    .abr-row { display: flex; align-items: flex-end; gap: 1.4rem; margin: 1.4rem 0; }
+
+    .abr-col { flex: 1; text-align: center; }
+
+    .bar-wrap { height: 130px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: .5rem; }
+
+    .bar {
+      width: 54px; border-radius: 3px 3px 0 0;
+      transition: height 1.2s cubic-bezier(.25,.8,.25,1);
+    }
+
+    .bar.before { background: rgba(143,160,190,.35); border: 1px solid rgba(143,160,190,.5); }
+    .bar.after  { background: linear-gradient(to top, var(--gold), var(--gold-light)); }
+
+    .abr-val { font-size: 1.55rem; font-weight: bold; color: var(--white); }
+    .abr-val.gold { color: var(--gold); }
+    .abr-lbl { font-family: Arial, sans-serif; font-size: .7rem; color: var(--muted); margin-top: .3rem; line-height: 1.4; }
+
+    .abr-arrow { color: var(--gold); font-size: 1.4rem; padding-bottom: 3.5rem; }
+
+    .p-note { font-family: Arial, sans-serif; font-size: .78rem; color: var(--muted); margin-top: .3rem; }
+    .p-note span { color: var(--gold-light); font-weight: bold; }
+
+    .result-badge {
+      display: inline-flex; align-items: center; gap: .45rem;
+      background: rgba(201,168,76,.1); border: 1px solid var(--gold);
+      color: var(--gold-light);
+      padding: .38rem .85rem; margin-top: .9rem;
+      font-family: Arial, sans-serif; font-size: .73rem; letter-spacing: .06em;
+    }
+
+    /* ════════════════════════════════════════════════════
+       §8  SAFETY
+    ════════════════════════════════════════════════════ */
+    #safety { background: var(--navy); }
+
+    .safety-highlights { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem; margin-bottom: 2.2rem; }
+
+    .sh-card {
+      background: rgba(8,15,30,.75);
+      border: 1px solid rgba(201,168,76,.18);
+      border-top: 3px solid var(--gold);
+      padding: 1.8rem; text-align: center;
+    }
+
+    .sh-icon { font-size: 2.2rem; margin-bottom: .8rem; }
+    .sh-stat { font-size: 2.4rem; font-weight: bold; color: var(--gold); line-height: 1; margin-bottom: .4rem; }
+    .sh-lbl { font-family: Arial, sans-serif; font-size: .78rem; color: var(--muted); }
+
+    .ae-table { width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: .84rem; }
+
+    .ae-table th {
+      background: rgba(201,168,76,.12); color: var(--gold);
+      padding: .75rem 1rem; text-align: left;
+      letter-spacing: .06em; font-size: .72rem; text-transform: uppercase;
+    }
+
+    .ae-table td {
+      padding: .78rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      color: var(--light);
+    }
+
+    .ae-table tr:hover td { background: rgba(201,168,76,.04); }
+
+    .safety-note {
+      margin-top: 1.5rem; padding: 1rem 1.5rem;
+      background: rgba(201,168,76,.06);
+      border-left: 3px solid var(--gold);
+      color: var(--light); font-size: .88rem; line-height: 1.7;
+    }
+
+    /* ════════════════════════════════════════════════════
+       §9  SIGNIFICANCE
+    ════════════════════════════════════════════════════ */
+    #significance { background: var(--navy-dark); }
+
+    .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+
+    .sig-badge {
+      background: rgba(201,168,76,.09);
+      border: 2px solid var(--gold);
+      padding: 1.8rem; margin-bottom: 1.4rem; text-align: center;
+    }
+
+    .sig-badge h3 { color: var(--gold); font-size: 1.2rem; margin-bottom: .5rem; }
+    .sig-badge p { color: var(--light); font-size: .88rem; line-height: 1.65; }
+
+    .sig-badge.dim { border-color: rgba(201,168,76,.35); }
+
+    .takeaway-list { list-style: none; }
+
+    .takeaway {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1.15rem 0; border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+
+    .takeaway:last-child { border-bottom: none; }
+
+    .tk-check { color: var(--gold); font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+    .tk-text { color: var(--light); font-size: .92rem; line-height: 1.65; }
+    .tk-text strong { color: var(--gold-light); }
+
+    /* ════════════════════════════════════════════════════
+       §10  Q&A
+    ════════════════════════════════════════════════════ */
+    #qa { background: var(--navy); text-align: center; }
+
+    .qa-inner { max-width: 680px; margin: 0 auto; }
+
+    .qa-heading {
+      font-size: clamp(4.5rem, 12vw, 9rem);
+      color: var(--gold); line-height: 1; font-style: italic;
+      margin-bottom: .4rem;
+    }
+
+    .qa-sub {
+      font-family: Arial, sans-serif; font-size: .9rem;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 2.5rem;
+    }
+
+    .qa-body { color: var(--light); font-size: 1rem; line-height: 1.85; margin-bottom: 3rem; }
+
+    .contact-row { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+
+    .contact-item { text-align: center; }
+    .ci-label { font-family: Arial, sans-serif; font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .3rem; }
+    .ci-val { color: var(--light); font-size: .92rem; }
+
+    /* ─── Scroll Animations ─────────────────────────────── */
+    .fi {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .75s ease, transform .75s ease;
+    }
+
+    .fi.d1 { transition-delay: .12s; }
+    .fi.d2 { transition-delay: .24s; }
+    .fi.d3 { transition-delay: .36s; }
+    .fi.d4 { transition-delay: .48s; }
+
+    .fi.show { opacity: 1; transform: translateY(0); }
+
+    /* ─── Responsive ────────────────────────────────────── */
+    @media (max-width: 880px) {
+      .about-grid, .moa-grid, .two-col, .sig-grid,
+      .results-grid, .trial-groups { grid-template-columns: 1fr; }
+
+      .photo-stack { height: 340px; }
+      .stat-grid   { grid-template-columns: 1fr 1fr; }
+      .unmet-row   { grid-template-columns: 1fr; }
+      .safety-highlights { grid-template-columns: 1fr; }
+      .nav-links   { display: none; }
+      .hero-content { padding: 3rem 1.5rem 4rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">Tim Riddell &thinsp;|&thinsp; PA-C, MMSc</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#background">Background</a></li>
+    <li><a href="#mechanism">Mechanism</a></li>
+    <li><a href="#trial">Trial Design</a></li>
+    <li><a href="#efficacy">Efficacy</a></li>
+    <li><a href="#safety">Safety</a></li>
+    <li><a href="#significance">Conclusions</a></li>
+  </ul>
+</nav>
+
+<div id="progress-bar"></div>
+
+<!-- ══════════════════════════════════════════════════════
+     §1  HERO
+══════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-wrap">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Medical Science Liaison Presentation</div>
+      <h1 class="hero-name">Tim Riddell</h1>
+      <div class="hero-cred">PA-C, MMSc</div>
+      <div class="hero-tags">
+        <span class="hero-tag">&#9670; Physician Assistant &rarr; Medical Affairs</span>
+        <span class="hero-tag">&#9670; 10 Years Clinical Experience</span>
+        <span class="hero-tag">&#9670; Hospital Medicine &amp; Industry</span>
+        <span class="hero-tag">&#9670; Family-First &nbsp;|&nbsp; Avid Traveler</span>
+      </div>
+      <button class="hero-cta" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+        <span class="cta-line"></span>
+        Begin
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     §2  ABOUT
+══════════════════════════════════════════════════════ -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+
+      <div class="photo-stack fi">
+        <img class="photo-main"      src="images/wine-tasting.jpg"  alt="Tim and wife at a winery in Tuscany" />
+        <img class="photo-secondary" src="images/tuscany.jpg"        alt="Exploring Tuscany" />
+      </div>
+
+      <div>
+        <div class="section-label fi">About Me</div>
+        <h2 class="section-title fi">Where Science <span class="gold">Meets</span> Purpose</h2>
+        <div class="divider fi"></div>
+        <p class="about-bio fi">
+          I'm a Physician Assistant with over a decade of clinical experience spanning hospital medicine
+          and a purposeful transition into industry Medical Affairs. That bedside background isn't
+          something I left behind — it's the lens through which I read data, engage with KOLs, and
+          understand what clinical evidence truly means for patients. My wife is also a PA, which means
+          science, medicine, and a healthy dose of evidence-based debate are very much part of our
+          dinner table.
+        </p>
+        <div class="about-cards fi d1">
+          <div class="about-card">
+            <div class="ac-icon">&#9877;</div>
+            <div class="ac-title">Clinical Foundation</div>
+            <div class="ac-text">10+ years as a PA-C in hospital medicine and medical affairs</div>
+          </div>
+          <div class="about-card">
+            <div class="ac-icon">&#10084;</div>
+            <div class="ac-title">Family First</div>
+            <div class="ac-text">Married to a PA &mdash; two kids, two bulldogs, one full house</div>
+          </div>
+          <div class="about-card">
+            <div class="ac-icon">&#9992;</div>
+            <div class="ac-title">Avid Traveler</div>
+            <div class="ac-text">Most recently roaming the vineyards of Tuscany with my best friend</div>
+          </div>
+          <div class="about-card">
+            <div class="ac-icon">&#127891;</div>
+            <div class="ac-title">PA &rarr; MSL</div>
+            <div class="ac-text">Clinical insight informing scientific exchange and medical communication</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     §3  PAPER OVERVIEW
+══════════════════════════════════════════════════════ -->
+<section id="overview">
+  <div class="container">
+    <div class="section-label fi">Today&rsquo;s Publication</div>
+    <h2 class="section-title fi">
+      Marstacimab Prophylaxis<br>
+      in <span class="gold">Hemophilia A &amp; B</span>
+    </h2>
+    <div class="divider fi"></div>
+
+    <div class="citation-box fi">
+      <div class="citation-label">Reference</div>
+      <div class="citation-text">
+        Matino D, Palladino A, Taylor CT, et al. <em>Marstacimab Prophylaxis in Hemophilia A/B
+        Without Inhibitors: Results from the Phase 3 BASIS Trial.</em>
+        <em>Blood.</em> 2025; blood.2024027468.
+        DOI: 10.1182/blood.2024027468 &mdash; NCT03938792
+      </div>
+    </div>
+
+    <div class="stat-grid fi">
+      <div class="stat-card">
+        <div class="stat-num">Phase 3</div>
+        <div class="stat-lbl">BASIS Trial</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">128</div>
+        <div class="stat-lbl">Patients Enrolled</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">18 mo</div>
+        <div class="stat-lbl">Total Study Duration</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">2</div>
+        <div class="stat-lbl">Hemophilia Types (A &amp; B)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">QW</div>
+        <div class="stat-lbl">Once-Weekly SC Dosing</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">1st</div>
+        <div class="stat-lbl">FDA-Approved Anti-TFPI Agent</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     §4  HEMOPHILIA BACKGROUND
+══════════════════════════════════════════════════════ -->
+<section id="background">
+  <div class="container">
+    <div class="section-label fi">Scientific Context</div>
+    <h2 class="section-title fi">
+      The Disease: <span class="gold">Hemophilia A &amp; B</span>
+    </h2>
+    <div class="divider fi"></div>
+
+    <div class="two-col">
+      <div>
+        <div class="hemo-card fi">
+          <h3>Hemophilia A</h3>
+          <p>
+            <span class="hemo-stat">~1 in 5,000</span> male births &mdash;
+            deficiency of <strong>Factor VIII</strong>. Severe disease is defined as
+            FVIII activity &lt;1%. Recurrent joint bleeds drive hemophilic arthropathy
+            and long-term disability. The most common severe bleeding disorder.
+          </p>
+        </div>
+        <div class="hemo-card fi d1">
+          <h3>Hemophilia B</h3>
+          <p>
+            <span class="hemo-stat">~1 in 25,000</span> male births &mdash;
+            deficiency of <strong>Factor IX</strong>. Moderately severe to severe disease
+            defined as FIX &le;2%. Clinically similar to HA but historically underserved
+            by subcutaneous prophylaxis options &mdash; a key gap this trial addresses.
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <p class="section-label" style="margin-bottom:.9rem">Current Treatment Landscape</p>
+        <ul class="tx-list">
+          <li class="tx-item fi">
+            <span class="tx-dot">&#9670;</span>
+            <div>
+              <strong>Factor Replacement Therapy (IV)</strong> &mdash; Standard of care.
+              Prophylactic or on-demand. Effective but requires IV access and frequent
+              infusions; inhibitor development complicates management in ~30% of severe HA.
+            </div>
+          </li>
+          <li class="tx-item fi d1">
+            <span class="tx-dot">&#9670;</span>
+            <div>
+              <strong>Emicizumab (Hemlibra)</strong> &mdash; Bispecific antibody bridging
+              FIXa and FX. SC, once-weekly to monthly. Transformative for HA &mdash;
+              but approved for hemophilia A only, leaving HB patients without a comparable
+              SC prophylaxis option.
+            </div>
+          </li>
+          <li class="tx-item fi d2">
+            <span class="tx-dot">&#9670;</span>
+            <div>
+              <strong>On-Demand Therapy</strong> &mdash; Treatment initiated only at time
+              of bleeding. Prevalent in lower-resource settings. Associated with high ABRs,
+              cumulative joint damage, and diminished quality of life.
+            </div>
+          </li>
+          <li class="tx-item fi d3">
+            <span class="tx-dot">&#9670;</span>
+            <div>
+              <strong>Gene Therapy</strong> &mdash; Emerging curative approach. HB has
+              shown more durable responses due to smaller transgene size. Long-term
+              durability and broad access remain active areas of study.
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="unmet-row fi">
+      <div class="unmet-card">
+        <h4>Adherence Burden</h4>
+        <p>Frequent IV infusions for factor replacement create significant burden,
+           particularly for pediatric patients and those with limited venous access.</p>
+      </div>
+      <div class="unmet-card">
+        <h4>HB Prophylaxis Gap</h4>
+        <p>Prior to marstacimab, no SC prophylaxis option existed for hemophilia B &mdash;
+           a critical therapeutic disparity relative to hemophilia A.</p>
+      </div>
+      <div class="unmet-card">
+        <h4>Breakthrough Bleeds</h4>
+        <p>Even on established prophylaxis, patients experience breakthrough bleeds.
+           Novel rebalancing mechanisms may offer superior or complementary protection.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     §5  MECHANISM OF ACTION
+══════════════════════════════════════════════════════ -->
+<section id="mechanism">
+  <div class="container">
+    <div class="section-label fi">Pharmacology</div>
+    <h2 class="section-title fi">Mechanism <span class="gold">of Action</span></h2>
+    <div class="divider fi"></div>
+
+    <div class="moa-grid">
+      <div>
+        <div class="drug-badge fi">
+          <div>
+            <div class="db-name">Marstacimab</div>
+            <div class="db-class">Anti-TFPI IgG1 Monoclonal Antibody &bull; SC Once-Weekly</div>
+          </div>
+        </div>
+
+        <ul class="moa-steps">
+          <li class="moa-step fi">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h4>TFPI: The Natural Brake on Coagulation</h4>
+              <p>Tissue Factor Pathway Inhibitor (TFPI) is an endogenous anticoagulant
+                 that limits the extrinsic coagulation pathway by inhibiting Factor Xa
+                 and the TF/FVIIa initiating complex &mdash; normally a well-calibrated
+                 physiologic brake on thrombin generation.</p>
+            </div>
+          </li>
+          <li class="moa-step fi d1">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h4>Hemophilia: An Imbalanced Coagulation System</h4>
+              <p>When FVIII or FIX is absent or severely reduced, the intrinsic amplification
+                 of thrombin generation fails. TFPI&rsquo;s continued inhibition of the extrinsic
+                 pathway leaves the system unable to generate sufficient thrombin for
+                 effective hemostasis &mdash; resulting in uncontrolled bleeding.</p>
+            </div>
+          </li>
+          <li class="moa-step fi d2">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h4>Marstacimab Releases the Brake</h4>
+              <p>By binding and neutralizing the Kunitz-2 domain of TFPI, marstacimab
+                 removes the endogenous inhibition of the extrinsic pathway &mdash; restoring
+                 thrombin generation independent of Factor VIII or IX. The mechanism
+                 is effective for both hemophilia A and B, and does not require co-administration
+                 of clotting factors.</p>
+            </div>
+          </li>
+          <li class="moa-step fi d3">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <h4>A Non-Factor, Disease-Agnostic Approach</h4>
+              <p>Unlike emicizumab (HA-specific) or factor concentrates (deficiency-specific),
+                 marstacimab&rsquo;s upstream TFPI-targeting mechanism is agnostic to the
+                 site of intrinsic pathway deficiency &mdash; making it a versatile rebalancing
+                 therapy applicable across hemophilia types.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Coagulation Cascade Diagram -->
+      <div class="cascade-wrap fi d2">
+        <svg viewBox="0 0 380 510" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <defs>
+            <marker id="ag" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#c9a84c"/>
+            </marker>
+            <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(239,68,68,.75)"/>
+            </marker>
+          </defs>
+
+          <!-- Title -->
+          <text x="190" y="24" text-anchor="middle" fill="#c9a84c"
+                font-family="Arial" font-size="11" letter-spacing="2" font-weight="bold">
+            COAGULATION REBALANCING
+          </text>
+
+          <!-- Extrinsic Pathway -->
+          <rect x="10" y="40" width="145" height="48" rx="3"
+                fill="rgba(201,168,76,.15)" stroke="#c9a84c" stroke-width="1.5"/>
+          <text x="82" y="60" text-anchor="middle" fill="#e2c06a"
+                font-family="Arial" font-size="10" font-weight="bold">EXTRINSIC PATHWAY</text>
+          <text x="82" y="78" text-anchor="middle" fill="#8fa0be"
+                font-family="Arial" font-size="9">TF + FVIIa complex</text>
+
+          <!-- Intrinsic Pathway -->
+          <rect x="215" y="40" width="155" height="48" rx="3"
+                fill="rgba(143,160,190,.08)" stroke="rgba(143,160,190,.35)" stroke-width="1.5"/>
+          <text x="292" y="60" text-anchor="middle" fill="#8fa0be"
+                font-family="Arial" font-size="10" font-weight="bold">INTRINSIC PATHWAY</text>
+          <text x="292" y="78" text-anchor="middle" fill="#8fa0be"
+                font-family="Arial" font-size="9">FVIII / FIX (deficient)</text>
+
+          <!-- Red cross over intrinsic pathway -->
+          <line x1="220" y1="45" x2="364" y2="83" stroke="rgba(239,68,68,.55)" stroke-width="2.2"/>
+          <line x1="364" y1="45" x2="220" y2="83" stroke="rgba(239,68,68,.55)" stroke-width="2.2"/>
+
+          <!-- Down arrow: extrinsic → FXa -->
+          <line x1="82" y1="88" x2="82" y2="128" stroke="#c9a84c" stroke-width="1.5" marker-end="url(#ag)"/>
+
+          <!-- FXa -->
+          <rect x="42" y="128" width="80" height="34" rx="3"
+                fill="rgba(201,168,76,.2)" stroke="#c9a84c" stroke-width="1.5"/>
+          <text x="82" y="151" text-anchor="middle" fill="#e2c06a"
+                font-family="Arial" font-size="11" font-weight="bold">Factor Xa</text>
+
+          <!-- TFPI block -->
+          <rect x="145" y="130" width="68" height="32" rx="3"
+                fill="rgba(239,68,68,.14)" stroke="rgba(239,68,68,.6)" stroke-width="1.5"/>
+          <text x="179" y="147" text-anchor="middle" fill="#f87171"
+                font-family="Arial" font-size="10" font-weight="bold">TFPI</text>
+          <text x="179" y="159" text-anchor="middle" fill="#f87171"
+                font-family="Arial" font-size="8">inhibits FXa</text>
+
+          <!-- TFPI arrow to FXa -->
+          <line x1="145" y1="145" x2="122" y2="145" stroke="rgba(239,68,68,.7)"
+                stroke-width="2" marker-end="url(#ar)"/>
+
+          <!-- Marstacimab box -->
+          <rect x="234" y="120" width="136" height="52" rx="3"
+                fill="rgba(201,168,76,.22)" stroke="#c9a84c" stroke-width="2"/>
+          <text x="302" y="139" text-anchor="middle" fill="#c9a84c"
+                font-family="Arial" font-size="10" font-weight="bold">Marstacimab</text>
+          <text x="302" y="153" text-anchor="middle" fill="#e2c06a"
+                font-family="Arial" font-size="8">binds TFPI Kunitz-2</text>
+          <text x="302" y="164" text-anchor="middle" fill="#e2c06a"
+                font-family="Arial" font-size="8">&#10140; neutralizes inhibition</text>
+
+          <!-- Marstacimab dashes to TFPI -->
+          <line x1="234" y1="145" x2="213" y2="145" stroke="#c9a84c"
+                stroke-width="1.8" stroke-dasharray="4,3" marker-end="url(#ag)"/>
+          <!-- Block symbol -->
+          <text x="219" y="139" fill="#c9a84c" font-family="Arial" font-size="13" font-weight="bold">&#215;</text>
+
+          <!-- FXa → Prothrombin -->
+          <line x1="82" y1="162" x2="82" y2="200" stroke="#c9a84c" stroke-width="1.5" marker-end="url(#ag)"/>
+
+          <!-- Prothrombin -->
+          <rect x="22" y="200" width="120" height="34" rx="3"
+                fill="rgba(201,168,76,.1)" stroke="rgba(201,168,76,.4)" stroke-width="1.5"/>
+          <text x="82" y="218" text-anchor="middle" fill="#e2c06a"
+                font-family="Arial" font-size="10">Prothrombin (II)</text>
+          <text x="82" y="230" text-anchor="middle" fill="#8fa0be"
+                font-family="Arial" font-size="8">&#8594; Thrombin (IIa)</text>
+
+          <!-- Thrombin → Fibrin -->
+          <line x1="82" y1="234" x2="82" y2="274" stroke="#c9a84c" stroke-width="1.5" marker-end="url(#ag)"/>
+
+          <!-- Fibrin Clot -->
+          <rect x="22" y="274" width="120" height="36" rx="3"
+                fill="rgba(201,168,76,.2)" stroke="#c9a84c" stroke-width="2"/>
+          <text x="82" y="293" text-anchor="middle" fill="#e2c06a"
+                font-family="Arial" font-size="11" font-weight="bold">Fibrin Clot</text>
+          <text x="82" y="305" text-anchor="middle" fill="#8fa0be"
+                font-family="Arial" font-size="8">Hemostasis restored</text>
+
+          <!-- Check -->
+          <text x="160" y="302" fill="#4ade80" font-size="22" font-family="Arial">&#10003;</text>
+
+          <!-- Legend -->
+          <rect x="10" y="338" width="360" height="158" rx="3"
+                fill="rgba(13,31,60,.6)" stroke="rgba(201,168,76,.14)" stroke-width="1"/>
+          <text x="190" y="357" text-anchor="middle" fill="#c9a84c"
+                font-family="Arial" font-size="9" letter-spacing="2" font-weight="bold">KEY</text>
+
+          <rect x="22" y="368" width="11" height="11" fill="rgba(201,168,76,.22)" stroke="#c9a84c" stroke-width="1.5"/>
+          <text x="40" y="378" fill="#e2c06a" font-family="Arial" font-size="9">Marstacimab (anti-TFPI; restores extrinsic pathway)</text>
+
+          <rect x="22" y="388" width="11" height="11" fill="rgba(239,68,68,.14)" stroke="rgba(239,68,68,.6)" stroke-width="1"/>
+          <text x="40" y="398" fill="#f87171" font-family="Arial" font-size="9">TFPI (over-active in hemophilia; now neutralized)</text>
+
+          <rect x="22" y="408" width="11" height="11" fill="rgba(143,160,190,.08)" stroke="rgba(143,160,190,.35)" stroke-width="1"/>
+          <text x="40" y="418" fill="#8fa0be" font-family="Arial" font-size="9">Intrinsic pathway (deficient; FVIII or FIX)</text>
+
+          <line x1="22" y1="433" x2="33" y2="433" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="40" y="437" fill="#8fa0be" font-family="Arial" font-size="9">Marstacimab binding / neutralization (dashed)</text>
+
+          <text x="22" y="460" fill="#8fa0be" font-family="Arial" font-size="8" font-style="italic">
+            *Effect is independent of hemophilia type (A or B)
+          </text>
+          <text x="22" y="474" fill="#8fa0be" font-family="Arial" font-size="8" font-style="italic">
+            *No co-administration of clotting factor required
+          </text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     §6  TRIAL DESIGN
+══════════════════════════════════════════════════════ -->
+<section id="trial">
+  <div class="container">
+    <div class="section-label fi">Study Design</div>
+    <h2 class="section-title fi">BASIS <span class="gold">Phase 3</span> Trial</h2>
+    <div class="divider fi"></div>
+
+    <!-- Schema -->
+    <div class="schema-scroll fi">
+      <div class="schema-flow">
+        <div class="schema-box screening">
+          <div class="schema-tag">Step 1</div>
+          <div class="schema-dur">Eligibility</div>
+          <div class="schema-desc">
+            Males 12&ndash;74 yrs<br>
+            Severe HA (FVIII &lt;1%) or<br>
+            Mod-Severe HB (FIX &le;2%)<br>
+            No inhibitors
+          </div>
+        </div>
+        <div class="schema-arrow">&rarr;</div>
+        <div class="schema-box op">
+          <div class="schema-tag">Observational Phase (OP)</div>
+          <div class="schema-dur">6 Months</div>
+          <div class="schema-desc">
+            Continued prior therapy<br>
+            (On-Demand <em>or</em> Prophylaxis)<br>
+            ABR recorded as baseline
+          </div>
+        </div>
+        <div class="schema-arrow">&rarr;</div>
+        <div class="schema-box atp">
+          <div class="schema-tag">Active Treatment Phase (ATP)</div>
+          <div class="schema-dur">12 Months</div>
+          <div class="schema-desc">
+            Marstacimab 300&thinsp;mg load &rarr;<br>
+            150&thinsp;mg SC once weekly<br>
+            Primary efficacy period
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Groups -->
+    <div class="trial-groups fi">
+      <div class="group-card">
+        <h3>On-Demand (OD) Group &mdash; n&nbsp;=&nbsp;33</h3>
+        <div class="detail-row">
+          <span class="dr-label">Prior therapy</span>
+          <span class="dr-val">Episode-based factor replacement</span>
+        </div>
+        <div class="detail-row">
+          <span class="dr-label">Comparator (OP)</span>
+          <span class="dr-val">Self-reported on-demand ABR</span>
+        </div>
+        <div class="detail-row">
+          <span class="dr-label">Statistical hypothesis</span>
+          <span class="dr-val">Superiority (ABR ratio vs OP)</span>
+        </div>
+        <div class="detail-row">
+          <span class="dr-label">Disease types</span>
+          <span class="dr-val">Hemophilia A &amp; B</span>
+        </div>
+      </div>
+      <div class="group-card">
+        <h3>Routine Prophylaxis (RP) Group &mdash; n&nbsp;=&nbsp;83</h3>
+        <div class="detail-row">
+          <span class="dr-label">Prior therapy</span>
+          <span class="dr-val">Regular IV factor prophylaxis</span>
+        </div>
+        <div class="detail-row">
+          <span class="dr-label">Comparator (OP)</span>
+          <span class="dr-val">On-prophylaxis ABR during OP</span>
+        </div>
+        <div class="detail-row">
+          <span class="dr-label">Statistical hypothesis</span>
+          <span class="dr-val">Noninferiority then Superiority</span>
+        </div>
+        <div class="detail-row">
+          <span class="dr-label">NI margin</span>
+          <span class="dr-val">+3 bleeds / year</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Endpoints -->
+    <ul class="ep-list fi d1">
+      <li class="ep-item">
+        <span class="ep-badge">Primary</span>
+        Treated annualized bleeding rate (ABR) during ATP vs. prior therapy during OP &mdash;
+        assessed independently for OD and RP groups
+      </li>
+      <li class="ep-item">
+        <span class="ep-badge">Primary</span>
+        Safety and tolerability across all study participants
+      </li>
+      <li class="ep-item">
+        <span class="ep-badge sec">Secondary</span>
+        Total ABR (treated + untreated), spontaneous bleed ABR, joint bleed ABR
+      </li>
+      <li class="ep-item">
+        <span class="ep-badge sec">Secondary</span>
+        Patient-reported outcomes, pharmacokinetics, immunogenicity (anti-drug antibody formation)
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     §7  EFFICACY
+══════════════════════════════════════════════════════ -->
+<section id="efficacy">
+  <div class="container">
+    <div class="section-label fi" style="text-align:center">Primary Results</div>
+    <h2 class="section-title fi" style="text-align:center">
+      Efficacy <span class="gold">Results</span>
+    </h2>
+    <div class="divider fi" style="margin: 0 auto 2rem"></div>
+
+    <div style="text-align:center; margin-bottom:2.5rem" class="fi">
+      <div class="big-stat">91.6%</div>
+      <div class="big-stat-lbl">Reduction in Annualized Bleeding Rate vs. Prior On-Demand Therapy</div>
+    </div>
+
+    <div class="results-grid">
+
+      <!-- OD Group -->
+      <div class="result-card fi">
+        <h3>On-Demand Group (n&nbsp;=&nbsp;33)</h3>
+        <div class="abr-row">
+          <div class="abr-col">
+            <div class="bar-wrap">
+              <div class="bar before" data-h="130" style="height:130px"></div>
+            </div>
+            <div class="abr-val">39.86</div>
+            <div class="abr-lbl">Baseline ABR<br>(OP, on-demand)</div>
+          </div>
+          <div class="abr-arrow">&rarr;</div>
+          <div class="abr-col">
+            <div class="bar-wrap">
+              <div class="bar after" data-h="10" style="height:10px"></div>
+            </div>
+            <div class="abr-val gold">3.20</div>
+            <div class="abr-lbl">Marstacimab ABR<br>(ATP, 12 months)</div>
+          </div>
+        </div>
+        <div class="p-note">ABR Ratio: <span>0.080</span> (95% CI: 0.057&ndash;0.113)</div>
+        <div class="p-note">P-value: <span>P &lt; .0001</span></div>
+        <div class="result-badge">&#10003; Superiority Demonstrated</div>
+      </div>
+
+      <!-- RP Group -->
+      <div class="result-card fi d1">
+        <h3>Routine Prophylaxis Group (n&nbsp;=&nbsp;83)</h3>
+        <div class="abr-row">
+          <div class="abr-col">
+            <div class="bar-wrap">
+              <div class="bar before" data-h="30" style="height:30px"></div>
+            </div>
+            <div class="abr-val">7.90</div>
+            <div class="abr-lbl">Baseline ABR<br>(OP, prophylaxis)</div>
+          </div>
+          <div class="abr-arrow">&rarr;</div>
+          <div class="abr-col">
+            <div class="bar-wrap">
+              <div class="bar after" data-h="20" style="height:20px"></div>
+            </div>
+            <div class="abr-val gold">5.09</div>
+            <div class="abr-lbl">Marstacimab ABR<br>(ATP, 12 months)</div>
+          </div>
+        </div>
+        <div class="p-note">ABR Difference: <span>&minus;2.81</span> (95% CI: &minus;5.42 to &minus;0.20)</div>
+        <div class="p-note">P-value: <span>P = .0349</span></div>
+        <div class="result-badge">&#10003; Noninferiority &amp; Superiority Demonstrated</div>
+      </div>
+
+    </div>
+
+    <p class="fi" style="margin-top:1.4rem; text-align:center; font-family:Arial,sans-serif;
+       font-size:.76rem; color:var(--muted);">
+      ABR = Annualized Bleeding Rate for treated bleeds &nbsp;|&nbsp;
+      OP = Observational Phase &nbsp;|&nbsp; ATP = Active Treatment Phase &nbsp;|&nbsp;
+      95% CI reported for all estimates
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     §8  SAFETY
+══════════════════════════════════════════════════════ -->
+<section id="safety">
+  <div class="container">
+    <div class="section-label fi">Tolerability</div>
+    <h2 class="section-title fi">Safety <span class="gold">Profile</span></h2>
+    <div class="divider fi"></div>
+
+    <div class="safety-highlights fi">
+      <div class="sh-card">
+        <div class="sh-icon">&#128138;</div>
+        <div class="sh-stat">0</div>
+        <div class="sh-lbl">Deaths Reported</div>
+      </div>
+      <div class="sh-card">
+        <div class="sh-icon">&#129706;</div>
+        <div class="sh-stat">0</div>
+        <div class="sh-lbl">Thromboembolic Events</div>
+      </div>
+      <div class="sh-card">
+        <div class="sh-icon">&#128137;</div>
+        <div class="sh-stat">Low</div>
+        <div class="sh-lbl">Clinical Impact of Immunogenicity</div>
+      </div>
+    </div>
+
+    <table class="ae-table fi d1">
+      <thead>
+        <tr>
+          <th>Adverse Event / Finding</th>
+          <th>Frequency</th>
+          <th>Clinical Significance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Injection Site Reactions</td>
+          <td>Most common AE</td>
+          <td>Expected with SC administration; generally mild and manageable</td>
+        </tr>
+        <tr>
+          <td>Anti-Drug Antibodies (ADA)</td>
+          <td>Detected in a subset</td>
+          <td>Transient; neutralizing ADAs had no clinically meaningful impact on efficacy or safety</td>
+        </tr>
+        <tr>
+          <td>Thromboembolic Events</td>
+          <td>None</td>
+          <td>Directly addresses the key theoretical concern of TFPI inhibition — absence is a reassuring signal</td>
+        </tr>
+        <tr>
+          <td>Deaths</td>
+          <td>None</td>
+          <td>Consistent with a favorable overall safety profile throughout the study</td>
+        </tr>
+        <tr>
+          <td>Pharmacokinetics</td>
+          <td>Predictable; weight-independent</td>
+          <td>Supports fixed once-weekly dosing; reduces prescribing complexity</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="safety-note fi d2">
+      <strong style="color:var(--gold)">Key Safety Context:</strong> A theoretical concern
+      with anti-TFPI therapy is thrombosis &mdash; releasing the coagulation brake could,
+      in principle, over-activate clotting. The complete absence of thromboembolic events
+      across the full BASIS patient population is a clinically significant and reassuring
+      safety signal that validates the therapeutic window of TFPI inhibition at the
+      doses studied.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     §9  CLINICAL SIGNIFICANCE
+══════════════════════════════════════════════════════ -->
+<section id="significance">
+  <div class="container">
+    <div class="section-label fi">Key Takeaways</div>
+    <h2 class="section-title fi">Clinical <span class="gold">Significance</span></h2>
+    <div class="divider fi"></div>
+
+    <div class="sig-grid">
+      <div>
+        <div class="sig-badge fi">
+          <h3>&#9733; FDA Approved</h3>
+          <p>First anti-TFPI monoclonal antibody approved for prophylaxis in hemophilia A
+             and B without inhibitors &mdash; establishing a novel mechanism class in clinical practice.</p>
+        </div>
+        <div class="sig-badge dim fi d1">
+          <h3>&#127963; Hemophilia B Breakthrough</h3>
+          <p>First once-weekly subcutaneous prophylaxis option available for hemophilia B patients
+             &mdash; addressing a longstanding and meaningful therapeutic gap relative to hemophilia A.</p>
+        </div>
+      </div>
+
+      <div>
+        <ul class="takeaway-list">
+          <li class="takeaway fi">
+            <span class="tk-check">&#10003;</span>
+            <div class="tk-text">
+              <strong>91.6% ABR reduction</strong> vs. on-demand therapy demonstrates profound
+              bleed prevention in a population previously relying on episodic treatment &mdash;
+              a clinically and humanistically meaningful outcome.
+            </div>
+          </li>
+          <li class="takeaway fi d1">
+            <span class="tk-check">&#10003;</span>
+            <div class="tk-text">
+              <strong>Noninferiority and superiority</strong> over prior factor prophylaxis
+              in the RP group confirms that an SC option can achieve at least equivalent &mdash;
+              and statistically superior &mdash; bleed control compared with IV prophylaxis.
+            </div>
+          </li>
+          <li class="takeaway fi d2">
+            <span class="tk-check">&#10003;</span>
+            <div class="tk-text">
+              <strong>Fixed once-weekly SC dosing</strong> (not weight-based) simplifies
+              administration, reduces clinical infrastructure requirements, and may meaningfully
+              improve long-term adherence and patient autonomy.
+            </div>
+          </li>
+          <li class="takeaway fi d3">
+            <span class="tk-check">&#10003;</span>
+            <div class="tk-text">
+              <strong>Zero thromboembolic events</strong> across the trial population directly
+              refutes the primary safety concern of pro-coagulant therapy and
+              validates the therapeutic window of TFPI inhibition.
+            </div>
+          </li>
+          <li class="takeaway fi">
+            <span class="tk-check">&#10003;</span>
+            <div class="tk-text">
+              <strong>Disease-agnostic mechanism</strong> &mdash; anti-TFPI activity works
+              for both HA and HB through a single drug, expanding the addressable
+              patient population and simplifying the clinical decision framework.
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     §10  Q&A
+══════════════════════════════════════════════════════ -->
+<section id="qa">
+  <div class="container">
+    <div class="qa-inner">
+      <div class="qa-heading fi">Q&amp;A</div>
+      <div class="qa-sub fi">Thank you for your time</div>
+      <p class="qa-body fi">
+        I appreciate the opportunity to present today. From the coagulation biology of
+        TFPI inhibition to the real-world implications of the BASIS trial outcomes,
+        I hope this discussion has conveyed both my depth of scientific engagement with
+        the data and my genuine enthusiasm for the kind of meaningful scientific exchange
+        that defines excellent Medical Science Liaison work.
+      </p>
+      <div class="contact-row fi d1">
+        <div class="contact-item">
+          <div class="ci-label">Name</div>
+          <div class="ci-val">Tim Riddell, PA-C, MMSc</div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-label">Background</div>
+          <div class="ci-val">Physician Assistant &rarr; Medical Affairs</div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-label">Experience</div>
+          <div class="ci-val">10+ Years Clinical &amp; Industry</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════════ -->
+<script>
+  /* Progress bar */
+  const bar = document.getElementById('progress-bar');
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    bar.style.width = pct + '%';
+  });
+
+  /* Fade-in on scroll */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fi').forEach(el => io.observe(el));
+
+  /* Active nav highlight */
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const sections = document.querySelectorAll('section[id]');
+
+  const navIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.45 });
+
+  sections.forEach(s => navIO.observe(s));
+</script>
+
+</body>
+</html>
